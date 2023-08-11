@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <syscall.h>
 
+__BEGIN_DECLS
 /*
  * __NR_madvise 441
  */
@@ -49,5 +50,6 @@ int gmemPrefetch(unsigned long addr, size_t length, void *stream);
  * it indicates that the acquisition failed.
  */
 int gmemGetNumaId(void);
+__END_DECLS
 
 #endif
