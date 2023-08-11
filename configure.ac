@@ -50,14 +50,17 @@ AC_COMPILE_IFELSE(
 #####################################################################
 AC_ARG_WITH([device],
             AS_HELP_STRING([--with-device=DEVICE_TYPE],
-                           [the DEVICE_TYPE for used]),
+                           [the DEVICE_TYPE for used, such as Ascend]),
             [device_type=$withval])
 
+AM_CONDITIONAL([BUILD_FOR_ASCEND], [test "x$with_device" = "xAscend"])
 case "$with_device" in
+  Ascend)
+    AC_DEFINE(DEVICE_TYPE, [1], [USE ASCEND]);;
   '')
      AC_MSG_ERROR([MUST SPECIFIES DEVICE TYPE, USE --with-device]);;
   *)
-    AC_MSG_ERROR([unknow device type]);;
+    AC_MSG_ERROR([unknow device type, please use Ascend]);;
 esac
 
 #####################################################################

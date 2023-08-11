@@ -16,3 +16,18 @@ libgmem_la_CFLAGS = $(AM_CFLAGS) \
 		    -I$(top_srcdir)/include
 
 libgmem_la_LDFLAGS = $(AM_LDFLAGS)
+
+if BUILD_FOR_ASCEND
+ASCEND_PATH=/usr/local/Ascend/ascend-toolkit/latest/aarch64-linux
+
+libgmem_la_SOURCES += \
+	src/ascend/gmem_ascend.c
+
+AM_CFLAGS += \
+	-I$(top_srcdir)/src/ascend \
+	-I$(ASCEND_PATH)/include
+
+AM_LDFLAGS += \
+	-lascendcl \
+	-L$(ASCEND_PATH)/lib64/
+endif
