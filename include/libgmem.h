@@ -6,13 +6,24 @@
 
 __BEGIN_DECLS
 /*
+ * TODO: Remove these "ifndef" after kernel upgrade
+ */
+/*
  * __NR_madvise 441
  */
 #ifndef SYS_hmdvise
 # ifndef __NR_hmadvise
-#   define __NR_hmadvise -1
+#   define __NR_hmadvise 441
 # endif
 # define SYS_hmadvise __NR_hmadvise
+#endif
+
+#ifndef MADV_PREFETCH
+# define MADV_PREFETCH 32
+#endif
+
+#ifndef MADV_DONTNEED
+# define MADV_DONTNEED 4
 #endif
 
 /*
