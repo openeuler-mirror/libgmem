@@ -15,7 +15,7 @@
 #endif
 
 /*
- * gMemFreeEager - unmap memory data
+ * gmemFreeEager - unmap memory data
  * @args
  *     addr:    start address of the memory to be migrated
  *     length:  length of the memory to be migrated
@@ -23,10 +23,10 @@
  *
  * unmapp the logical page table of [addr, addr + length)
  */
-int gMemFreeEager(unsigned long addr, size_t size, void *stream);
+int gmemFreeEager(unsigned long addr, size_t size, void *stream);
 
 /*
- * gMemPrefech - migrating memory data
+ * gmemPrefetch - migrating memory data
  * @args
  *     addr:    start address of the memory to be migrated
  *     length:  length of the memory to be migrated
@@ -40,14 +40,14 @@ int gMemFreeEager(unsigned long addr, size_t size, void *stream);
  * The asynchronous operation is non-blocking, but is executed in
  * sequence with the tasks in the stream.
  */
-int gMemPrefech(unsigned long addr, size_t length, void *stream);
+int gmemPrefetch(unsigned long addr, size_t length, void *stream);
 
 /*
- * gMemGetNumaId - get the numaid of the current device
+ * gmemGetNumaId - get the numaid of the current device
  * 
  * Returns the numaid of the current device. If it is a negative number,
  * it indicates that the acquisition failed.
  */
-int gMemGetNumaId(void);
+int gmemGetNumaId(void);
 
 #endif

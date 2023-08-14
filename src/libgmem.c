@@ -13,7 +13,7 @@ struct gm_msg {
 };
 typedef struct gm_msg *gm_msg_t;
 
-void gMemHadvise(void *userData) {
+void gmemAdvise(void *userData) {
 	struct gm_msg *msg = (struct gm_msg *)userData;
 	int ret = syscall(SYS_hmadvise, msg->hnid, msg->addr, msg->size, msg->behavior);
 	if(ret) {
@@ -21,17 +21,17 @@ void gMemHadvise(void *userData) {
 	}
 }
 
-int gMemFreeEager(unsigned long addr, size_t length, void *stream)
+int gmemFreeEager(unsigned long addr, size_t length, void *stream)
 {
 	return 0;
 }
 
-int gMemPrefech(unsigned long addr, size_t length, void *stream)
+int gmemPrefetch(unsigned long addr, size_t length, void *stream)
 {
  	return 0;
 }
 
-int gMemGetNumaId(void)
+int gmemGetNumaId(void)
 {
 	return 0;
 }
