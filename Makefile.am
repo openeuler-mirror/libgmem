@@ -1,10 +1,22 @@
+# Copyright (c) 2023 yangyanchao6@huawei.com 
+# libgmem is licensed under Mulan PSL v2.
+# You can use this software according to the terms and conditions of the Mulan PSL v2.
+# You may obtain a copy of Mulan PSL v2 at:
+#          http://license.coscl.org.cn/MulanPSL2
+# THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+# EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+# MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+# See the Mulan PSL v2 for more details.
+
 CLEANFILES = $(BUILE_FILES)
 DISTCLEANFILES =
 BUILT_FILES =
-ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLGAS}
+ACLOCAL_AMFLAGS = ${ACLOCAL_FLGAS}
 
-AM_CFLAGS = $(OUT_CFLAGS)
-AM_LDFLAGS = $(OUT_LDFLAGS)
+AM_CFLAGS = \
+	-Wall \
+	-Werror
+AM_LDFLAGS = 
 
 include_HEADERS = include/libgmem.h
 lib_LTLIBRARIES = libgmem.la

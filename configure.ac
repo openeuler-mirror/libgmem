@@ -1,3 +1,13 @@
+# Copyright (c) 2023 yangyanchao6@huawei.com 
+# libgmem is licensed under Mulan PSL v2.
+# You can use this software according to the terms and conditions of the Mulan PSL v2.
+# You may obtain a copy of Mulan PSL v2 at:
+#          http://license.coscl.org.cn/MulanPSL2
+# THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+# EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+# MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+# See the Mulan PSL v2 for more details.
+
 AC_PREREQ([2.65])
 AC_INIT([libgmem],
         [1],
@@ -5,7 +15,6 @@ AC_INIT([libgmem],
         [libgmem],
         [http://gitee.com/openeuler/libgmem.git])
 AC_CONFIG_SRCDIR([src])
-AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 AC_SUBST([libdir], ['${prefix}/lib64'])
 
@@ -66,16 +75,6 @@ esac
 #####################################################################
 # Default CFLAGS and LDFLAGS
 #####################################################################
-
-CC_CHECK_FLAGS_APPEND(with_cflags, [CFLAGS], [ \
-                      -Wall \
-		      -Werror])
-AC_SUBST([OUT_CFLAGS], "$with_cflags")
-
-CC_CHECK_FLAGS_APPEND(with_ldflags, [LDFLAGS], [\
-                      ])
-AC_SUBST([OUT_LDFLAGS], "$with_ldflags")
-
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
 AC_MSG_RESULT([
@@ -90,6 +89,6 @@ AC_MSG_RESULT([
 	bindir:			${bindir}
 
 	compiler:		${CC}
-	cflags:			${with_cflags} ${CFLAGS}
-	ldflags:		${with_ldflags} ${LDFLAGS}
+	cflags:			${CFLAGS}
+	ldflags:		${LDFLAGS}
 ])
