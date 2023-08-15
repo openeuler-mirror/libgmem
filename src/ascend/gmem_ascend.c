@@ -12,12 +12,12 @@ void init_gmemSemantics(void) __attribute__ ((constructor));
 
 int ascend_eager_free(void *userData, void *stream)
 {
-    return aclrtLaunchCallback((void (*)(void*))gmemHadvise, userData, ACL_CALLBACK_BLOCK, (aclrtStream)stream);
+    return aclrtLaunchCallback((void (*)(void*))gmemAdvise, userData, ACL_CALLBACK_BLOCK, (aclrtStream)stream);
 }
 
 int ascend_prefech(void *userData, void *stream)
 {
-    return aclrtLaunchCallback((void (*)(void*))gmemHadvise, userData, ACL_CALLBACK_BLOCK, (aclrtStream)stream);
+    return aclrtLaunchCallback((void (*)(void*))gmemAdvise, userData, ACL_CALLBACK_BLOCK, (aclrtStream)stream);
 }
 
 int ascend_numaid(void)
