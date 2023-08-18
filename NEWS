@@ -1,0 +1,16 @@
+libgmem NEWS -- history of user-visible changes.
+
+libgmem 0.1
+======
+
+- New features:
+	- libgmem use "--with-device=xx" to customize different accelerator cards.
+	- provide gmemPrefetch, gmemFreeEager. gmemGetNumaId to encapsulate memory semantics
+	  gmemPrefetch: migrate some memory to the accelerator cards.
+	  gmemFreeEager: release pages on accelerator cards.
+	  gmemGetNumaId: obtains the Numaid of the current device.
+	- libgmem supports Ascend card, [595c454692f32c0fa47260a61da626d82a260cb1,
+	  fb783e016f18951900be340e48aacbde5df9be75].
+	  src-openeuler doesn't have the construction of acl dependency, Therefore, use dlopen to invoke
+	  the acl library interface.
+	- libgmem use Mulan PSL v2 for protection, For details, see http://license.coscl.org.cn/MulanPSL2.

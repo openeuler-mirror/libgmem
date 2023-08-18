@@ -8,7 +8,13 @@ Software architecture description
 
 #### Installation
 
-1.  xxxx
+install with follows command
+```
+sh ./autogen.sh
+./configure --with-device=xxx
+make
+make install
+```
 
 #### Instructions
 
