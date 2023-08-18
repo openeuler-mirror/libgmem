@@ -20,7 +20,7 @@ LIBTOOLIZE=${LIBTOOLIZE:-libtoolize}
 
 set -ex
 "$LIBTOOLIZE" --copy
-"$ACLOCAL" -I m4
+"$ACLOCAL"
 "$AUTOCONF"
 "$AUTOHEADER"
 "$AUTOMAKE" --add-missing --copy
