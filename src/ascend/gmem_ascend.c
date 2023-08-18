@@ -15,21 +15,30 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/ioctl.h>
+#include <dlfcn.h>
+
 #include <gmem_common.h>
 
-#include "acl/acl.h"
 #include "gmem_ascend.h"
 
+#define LIB_ASCENDCL_PATH "/usr/local/Ascend/ascend-toolkit/latest/aarch64-linux/lib64/libascendcl.so"
+
 void init_gmemSemantics(void) __attribute__ ((constructor));
+void exit_gmemSemantics(void) __attribute__ ((destructor));
+
+typedef void (*Callback_fn)(void *userData);
+typedef int (*ACLRT_LAUNCH_CB_FUNC)(Callback_fn fn, void *userData, int vlockType, void *stream);
+ACLRT_LAUNCH_CB_FUNC aclrtLaunchCallback_fn;
+void *handle;
 
 int ascend_eager_free(void *userData, void *stream)
 {
-    return aclrtLaunchCallback((void (*)(void*))gmemAdvise, userData, ACL_CALLBACK_BLOCK, (aclrtStream)stream);
+    return aclrtLaunchCallback_fn((void (*)(void *))gmemAdvise, userData, 1, stream);
 }
 
 int ascend_prefech(void *userData, void *stream)
 {
-    return aclrtLaunchCallback((void (*)(void*))gmemAdvise, userData, ACL_CALLBACK_BLOCK, (aclrtStream)stream);
+    return aclrtLaunchCallback_fn((void (*)(void *))gmemAdvise, userData, 1, stream);
 }
 
 int ascend_numaid(void)
@@ -43,7 +52,6 @@ int ascend_numaid(void)
 		return -ENXIO;
 	}
 
-
 	arg.hnuma_id = &id;
 	ret = ioctl(fd, RPG_GET_HNUMA_ID, &arg);
 	if (ret < 0) {
@@ -56,7 +64,19 @@ int ascend_numaid(void)
 
 void init_gmemSemantics()
 {
+	handle = dlopen(LIB_ASCENDCL_PATH, RTLD_LAZY);
+	if (!handle) {
+		fprintf(stderr, "%s\n", dlerror());
+		exit(EXIT_FAILURE);
+	}
+
+	aclrtLaunchCallback_fn = (ACLRT_LAUNCH_CB_FUNC) dlsym(handle, "aclrtLaunchCallback");
 	gmemSemantics.FreeEager = ascend_eager_free;
 	gmemSemantics.Prefetch = ascend_prefech;
 	gmemSemantics.GetNumaId = ascend_numaid;
+}
+
+void exit_gmemSemantics()
+{
+	dlclose(handle);
 }
