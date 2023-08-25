@@ -23,17 +23,19 @@ gmem_semantics gmemSemantics;
 static void mix_userData(gm_msg_t userData, unsigned long addr, size_t length, int hnid, int behavior)
 {
 	userData->behavior = behavior;
-	userData->addr = addr;
-	userData->size = length;
+	userData->start = addr;
+	userData->len_in = length;
 	userData->hnid = hnid;
 }
 
 int gmemAdvise(void *userData)
 {
-	gm_msg_t msg = (gm_msg_t)userData;
-	int ret = syscall(SYS_hmadvise, msg->hnid, msg->addr, msg->size, msg->behavior);
+	int ret;
+	gm_msg msg = *(gm_msg_t)userData;
+
+	ret = ioctl(gmem_fd, GMEM_MADVISE, msg);
 	if(ret) {
-		printf("hmadvise failed: addr:%lx, size:%lx, behavior:%d, hnid:%d\n", msg->addr, msg->size, msg->behavior, msg->hnid);
+		printf("hmadvise failed: addr:%lx, size:%lx, behavior:%d, hnid:%d\n", msg.start, msg.len_in, msg.behavior, msg.hnid);
 	}
 	return ret;
 }
@@ -41,7 +43,7 @@ int gmemAdvise(void *userData)
 int gmemFreeEager(unsigned long addr, size_t length, void *stream)
 {
 	int ret = -1;
-	gm_msg_t userData = (gm_msg_t)malloc(sizeof(struct gm_msg));
+	gm_msg_t userData = (gm_msg_t)malloc(sizeof(gm_msg));
 	mix_userData(userData, addr, length, -1, MADV_DONTNEED);
 	if (!stream) {
 		ret = gmemAdvise(userData);
@@ -55,12 +57,12 @@ int gmemFreeEager(unsigned long addr, size_t length, void *stream)
 int gmemPrefetch(unsigned long addr, size_t length, void *stream)
 {
 	int ret = -1;
-	gm_msg_t userData = (gm_msg_t)malloc(sizeof(struct gm_msg));
+	gm_msg_t userData = (gm_msg_t)malloc(sizeof(gm_msg));
 	mix_userData(userData, addr, length, gmemGetNumaId(), MADV_PREFETCH);
 	if (!stream) {
 		ret = gmemAdvise(userData);
 	} else if(gmemSemantics.Prefetch != NULL) {
-		ret = gmemSemantics.FreeEager(userData,stream);
+		ret = gmemSemantics.Prefetch(userData, stream);
 	}
 	free(userData);
 	return ret;
