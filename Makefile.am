@@ -23,7 +23,8 @@ include_HEADERS = include/libgmem.h
 lib_LTLIBRARIES = libgmem.la
 
 libgmem_la_SOURCES = \
-	src/libgmem.c
+	src/libgmem.c \
+	src/init.c
 
 libgmem_la_CFLAGS = $(AM_CFLAGS) \
 		    -I$(top_srcdir)/include

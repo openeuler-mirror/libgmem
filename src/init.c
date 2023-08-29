@@ -10,25 +10,47 @@
  * See the Mulan PSL v2 for more details.
  */
 
-#ifndef _GMEM_WAPPER_H_
-#define _GMEM_WAPPER_H_
+#include <errno.h>
+#include <linux/mman.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
 
 #include <libgmem.h>
-#include <stdlib.h>
+#include <gmem_common.h>
 
-typedef struct {
-    int (*FreeEager)(void *userData, void *stream);
-    int (*Prefetch)(void *userData, void *stream);
-    int (*GetNumaId)(void);
-} gmem_semantics;
-extern gmem_semantics gmemSemantics;
-extern int gmem_fd;
+int gmem_fd;
 
-typedef struct hmadvise_arg gm_msg;
-typedef gm_msg *gm_msg_t;
+int init_libgmem(void) __attribute__ ((constructor));
+void exit_libgmem(void) __attribute__ ((destructor));
 
-void init_device(void);
-void destory_device(void);
+int get_gmem_fd()
+{
+	gmem_fd = open("/dev/gmem", O_RDWR);
+	if (gmem_fd == -1) {
+		 perror("Get gmem fd failed");
+		 return -ENXIO;
+	}
+	return 0;
+}
 
-int gmemAdvise(void *userData);
-#endif
+void release_gmem_fd()
+{
+	close(gmem_fd);
+}
+
+int init_libgmem(void)
+{
+	if (get_gmem_fd()) {
+		return -ENXIO;
+	}
+	init_device();
+	return 0;
+}
+
+void exit_libgmem(void)
+{
+	release_gmem_fd();
+	destory_device();
+}
+
