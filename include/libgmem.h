@@ -62,17 +62,19 @@ int gmemFreeEager(unsigned long addr, size_t size, void *stream);
  * @args
  *     addr:    start address of the memory to be migrated
  *     length:  length of the memory to be migrated
+ *     hnid:	the numa id of the target device
  *     stream:  the stream where work queue used by operation
  *
  * The physical data mapped by [addr, addr + length) will migrate to
- * the device corresponding to streamid. The hnuma node of the device
- *  in the current context needs to be automatically obtained
- * and the prefetch instruction of hmadvise is invoked.
+ * the target device corresponding to streamid.
+ *
+ * If stream is NULL, perform synchronous operation; otherwise,
+ * perform asynchronous operation.
  *
  * The asynchronous operation is non-blocking, but is executed in
  * sequence with the tasks in the stream.
  */
-int gmemPrefetch(unsigned long addr, size_t length, void *stream);
+int gmemPrefetch(unsigned long addr, size_t length, int hnid, void *stream);
 
 /*
  * gmemGetNumaId - get the numaid of the current device
