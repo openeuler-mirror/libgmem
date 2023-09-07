@@ -37,6 +37,7 @@ int gmemAdvise(void *userData)
 	if(ret) {
 		printf("hmadvise failed: addr:%lx, size:%lx, behavior:%d, hnid:%d\n", msg.start, msg.len_in, msg.behavior, msg.hnid);
 	}
+	free(userData);
 	return ret;
 }
 
@@ -44,27 +45,33 @@ int gmemFreeEager(unsigned long addr, size_t length, void *stream)
 {
 	int ret = -1;
 	gm_msg_t userData = (gm_msg_t)malloc(sizeof(gm_msg));
+	if (userData == NULL) {
+		fprintf(stderr, "Failed to allocate memory for userData\n");
+		return -ENOMEM;
+	}
 	mix_userData(userData, addr, length, -1, MADV_DONTNEED);
 	if (!stream) {
 		ret = gmemAdvise(userData);
 	} else if(gmemSemantics.FreeEager != NULL) {
 		ret = gmemSemantics.FreeEager(userData, stream);
 	}
-	free(userData);
 	return ret;
 }
 
-int gmemPrefetch(unsigned long addr, size_t length, void *stream)
+int gmemPrefetch(unsigned long addr, size_t length, int hnid, void *stream)
 {
 	int ret = -1;
 	gm_msg_t userData = (gm_msg_t)malloc(sizeof(gm_msg));
-	mix_userData(userData, addr, length, gmemGetNumaId(), MADV_PREFETCH);
+	if (userData == NULL) {
+		fprintf(stderr, "Failed to allocate memory for userData\n");
+		return -ENOMEM;
+	}
+	mix_userData(userData, addr, length, hnid, MADV_PREFETCH);
 	if (!stream) {
 		ret = gmemAdvise(userData);
 	} else if(gmemSemantics.Prefetch != NULL) {
 		ret = gmemSemantics.Prefetch(userData, stream);
 	}
-	free(userData);
 	return ret;
 }
 
