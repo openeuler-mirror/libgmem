@@ -14,6 +14,7 @@
 #include <linux/mman.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/ioctl.h>
 
 #include <libgmem.h>
 #include <gmem_common.h>
