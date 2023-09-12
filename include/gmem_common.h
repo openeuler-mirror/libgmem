@@ -15,6 +15,8 @@
 
 #include <libgmem.h>
 #include <stdlib.h>
+#include <syscall.h>
+#include <linux/gmem_dev.h>
 
 typedef struct {
     int (*FreeEager)(void *userData, void *stream);
