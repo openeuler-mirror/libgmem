@@ -14,7 +14,6 @@
 #define _LIBGMEM_H
 
 #include <unistd.h>
-#include <syscall.h>
 
 __BEGIN_DECLS
 /*
