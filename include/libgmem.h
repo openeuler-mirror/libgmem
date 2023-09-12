@@ -18,35 +18,6 @@
 
 __BEGIN_DECLS
 /*
- * TODO: Remove these "ifndef" after kernel upgrade
- */
-#include <sys/ioctl.h>
-struct hmadvise_arg {
-	int hnid;
-	unsigned long start;
-	size_t len_in;
-	int behavior;
-};
-struct gmem_hnid_arg {
-	int *hnuma_id;
-};
-#ifndef GMEM_GET_HNUMA_ID
- #define GMEM_GET_HNUMA_ID _IOW(0x55, 1, struct gmem_hnid_arg)
-#endif
-
-#ifndef GMEM_MADVISE
- #define GMEM_MADVISE _IOW(0x55, 2, struct hmadvise_arg)
-#endif
-
-#ifndef MADV_PREFETCH
-# define MADV_PREFETCH 32
-#endif
-
-#ifndef MADV_DONTNEED
-# define MADV_DONTNEED 4
-#endif
-
-/*
  * gmemFreeEager - unmap memory data
  * @args
  *     addr:    start address of the memory to be migrated
