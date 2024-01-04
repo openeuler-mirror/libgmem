@@ -18,7 +18,7 @@ make install
 
 #### Instructions
 
-libgmem currently has three external interfaces:
+libgmem currently has six external interfaces:
 1.
 gmemFreeEager: For address segments within a given range of [addr, addr + size], gmemFreeEager will release the entire page with the range aligned inward (default page size 2M).
                A stream that is NULL represents synchronous calls, while a non-NULL represents asynchronous calls. Asynchronous calls will be registered on the corresponding device's work stream.
@@ -53,6 +53,9 @@ gmemGetNumaId: Gets the NumaId of the current device.
   Prototype: int gmemGetNumaId (void);
   Usage: numaid = gmemGetNumaId();
   ```
+
+4.
+malloc/free/realloc: The interface is declared as a standard posix interface and encapsulates the jemalloc memory pool management. It is recommended that you do not use mmap for multiple times, which may cause extra performance overhead.
 
 #### Contribution
 
