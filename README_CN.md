@@ -19,7 +19,7 @@ make install
 
 #### 使用说明
 
-libgmem当前有三个对外接口：
+libgmem当前有六个对外接口：
 1.
 gmemFreeEager：对于给定范围[addr, addr + size]的地址段，gmemFreeEager会对范围向内对齐页面大小的完整页面进行释放（默认页面大小2M）。
                stream为空表示同步调用，非空表示异步调用，异步调用时会注册在对应设备的工作流上。
@@ -54,6 +54,9 @@ gmemGetNumaId：获取当前设备的NumaId。
   接口原型: int gmemGetNumaId(void);
   接口用法: numaid = gmemGetNumaId();
   ```
+
+4.
+malloc/free/realloc: 接口声明为标准posix接口，封装了jemalloc内存池管理，可以避免多次使用mmap，带来额外的性能开销。
 
 #### 参与贡献
 

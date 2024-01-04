@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 yangyanchao6@huawei.com 
+ * Copyright (c) 2023 Huawei Technologies Co., Ltd. 
  * libgmem is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -16,7 +16,7 @@
 #include <libgmem.h>
 #include <stdlib.h>
 #include <syscall.h>
-#include <linux/gmem_dev.h>
+#include <rpg_dev.h>
 
 typedef struct {
     int (*FreeEager)(void *userData, void *stream);
